@@ -2,8 +2,7 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const { PORT } = process.env;
-const port = process.env ||  PORT;
+const port = process.env.PORT;
 
 
 //Setting Up Mongoose 
