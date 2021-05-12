@@ -4,15 +4,16 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const port = process.env.PORT;
 const User = require('./user');
-
+const uri = process.env.MONGODB_URI;
 // express app
 const app = express();
 
 //Connect to mongodb
-const dbUR = 'mongodb+srv://awsesome:akinwande@cluster0s.uqd3q.mongodb.net/Crud-App?retryWrites=true&w=majority';
-mongoose.connect(dbUR, { useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false})
+
+mongoose.connect(uri, { useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false})
 .then((result)=>  app.listen(port, () => console.log(`app is listening on port ${port}`)))
 .catch((err) => console.log(err))
+
 
 
 
