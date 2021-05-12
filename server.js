@@ -9,7 +9,6 @@ const uri = process.env.MONGODB_URI;
 const app = express();
 
 //Connect to mongodb
-
 mongoose.connect(uri, { useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false})
 .then((result)=>  app.listen(port, () => console.log(`app is listening on port ${port}`)))
 .catch((err) => console.log(err))
