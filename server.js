@@ -1,42 +1,35 @@
 
 const express = require('express');
-const app = express();
 require('dotenv').config();
-const port = process.env.PORT;
-
-
-//Setting Up Mongoose 
 const mongoose = require('mongoose');
-const connectionString = 'mongodb://localhost:27017/userapp';
+const port = process.env.PORT;
+const User = require('./user');
+
+// express app
+const app = express();
+
+//Connect to mongodb
+const dbUR = 'mongodb+srv://awsesome:akinwande@cluster0s.uqd3q.mongodb.net/Crud-App?retryWrites=true&w=majority';
+mongoose.connect(dbUR, { useNewUrlParser: true,useUnifiedTopology: true, useFindAndModify: false})
+.then((result)=>  app.listen(port, () => console.log(`app is listening on port ${port}`)))
+.catch((err) => console.log(err))
+
+
+
+
 
 //Using Our Middleware
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 
-mongoose.connect(connectionString , {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false
-}, (err) => {
-  if (err) {
-    console.log(err)
-  } else {
-    console.log('Database connection successful')
-  }
-})
 
-//CREATE SCHEMA MODEL
-const userSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  country: String
-})
 
-const User = mongoose.model('User', userSchema)
+
 
 //POST ROUTE
 //POST request to /users to create a new user
-app.post('/users', (req,res)=> {
+ app.post('/users', (req,res)=> {
    //Retrieve new book from req.body
    User.create({
      name: req.body.name,
@@ -50,10 +43,32 @@ app.post('/users', (req,res)=> {
       }
    })
 
-})
+}) 
 
 //GET ROUTE
 // GET request to /users to fetch all users
+app.get('/add-user', (req, res)=> {
+  const user = new User({
+    name: 'Micheal Jordan',
+    email: 'michealjordan@gmail.com',
+    country: 'USA'
+  });
+
+  user.save()
+  .then((result)=> {
+    res.send(result)
+  })
+  .catch((err) => {
+    console.log(err)
+  });
+})
+
+
+
+
+
+
+
 app.get('/users', (req, res)=> {
   //Fetching all users
   User.find({}, (err, users) => {
@@ -121,5 +136,3 @@ app.delete('/users/:id', (req, res)=> {
 
 
 
-
-app.listen(port, () => console.log(`app is listening on port ${port}`))
