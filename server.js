@@ -66,9 +66,6 @@ app.get('/add-user', (req, res)=> {
 
 
 
-
-
-
 app.get('/users', (req, res)=> {
   //Fetching all users
   User.find({}, (err, users) => {
